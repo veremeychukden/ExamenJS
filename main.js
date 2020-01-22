@@ -39,7 +39,7 @@ async function showCurrency(){
          <td>${result[i].currencyType}</td> 
          <td>${result[i].txFee}</td> 
          <td>${result[i].minConf}</td> 
-         <td><button onclick='delCurrency(${i})'>Delete</button></td>
+         <td><button onclick='delCurrency(${i})' style='color:black;'>Delete</button></td>
          `);
     }   
 
@@ -49,6 +49,31 @@ async function showCurrency(){
 showCurrency();
 
 
-function delCurrency(currencyID){
-    result.splice(currencyID, 1); 
+
+async function SearchF(){
+    let response = await fetch(url);
+    let data = await response.json();
+     result = Object.keys(data).map(function(key) {
+     return data[key];
+    });
+    
+    $("#myBody").html("");
+    for(var i = 0; i < 15; i++)
+    {
+        if(result[i].name.toLowerCase().includes($("#search").val().toLowerCase()))
+        {
+            var tmp = $("#search").val();
+        document.getElementById("myBody").innerHTML +=
+        `
+        <tr><td>${result[i].id}</td> 
+        <td>${result[i].name.replace(eval("/"+tmp+"/gi"),"<a name="+tmp+" style='background:yellow'>"+tmp+"</a>")}</td>
+         <td>${result[i].humanType}</td> 
+         <td>${result[i].currencyType}</td> 
+         <td>${result[i].txFee}</td> 
+         <td>${result[i].minConf}</td> 
+         <td><button onclick='delCurrency(${i})' style='color:black;'>Delete</button></td></tr>
+         `;
+        }
+    }
+    
 }
